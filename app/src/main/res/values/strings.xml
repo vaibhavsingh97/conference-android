@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Conference</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="title_activity_register">Verify Your Details</string>
+    <!-- Strings related to registering the user -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_company_name">Company Name (optional)</string>
+    <string name="prompt_role">Role (optional)</string>
+    <string name="action_register">Register</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="success">Success</string>
+
+    <!-- Strings for accessibility -->
+    <!-- Content Description Strings -->
+    <string name="anita_borg">Anita Borg Institute</string>
+    <string name="ghc">Grace Hopper Celebration for Women in Computing</string>
+</resources>
