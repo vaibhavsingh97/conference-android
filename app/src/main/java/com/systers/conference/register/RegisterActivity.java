@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -89,7 +90,12 @@ public class RegisterActivity extends AppCompatActivity {
         mFirstName.setText(user.getFirstName());
         mLastName.setText(user.getLastName());
         mEmail.setText(user.getEmail());
-        mEmail.setEnabled(false);
+        mCompanyName.setText(user.getCompanyName());
+        mRole.setText(user.getRole());
+        if (!TextUtils.isEmpty(mEmail.getText().toString())) {
+            mEmail.setEnabled(false);
+            mLastName.setNextFocusDownId(R.id.company_name);
+        }
     }
 
 
@@ -108,10 +114,12 @@ public class RegisterActivity extends AppCompatActivity {
         mLastName.setError(null);
         mCompanyName.setError(null);
         mRole.setError(null);
+        mEmail.setError(null);
 
         // Store values at the time of the register attempt.
         String firstName = mFirstName.getText().toString();
         String lastName = mLastName.getText().toString();
+        String email = mEmail.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -124,6 +132,14 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(lastName)) {
             mLastName.setError(getString(R.string.error_field_required));
             focusView = mLastName;
+            cancel = true;
+        } else if (TextUtils.isEmpty(email)) {
+            mEmail.setError(getString(R.string.error_field_required));
+            focusView = mEmail;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmail.setError(getString(R.string.error_invalid_email));
+            focusView = mEmail;
             cancel = true;
         }
 
@@ -138,6 +154,10 @@ public class RegisterActivity extends AppCompatActivity {
             mAuthTask = new UserLoginTask();
             mAuthTask.execute((Void) null);
         }
+    }
+
+    private boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     /**

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 
 public class User implements Parcelable {
-
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {
@@ -13,6 +12,8 @@ public class User implements Parcelable {
             mUser.firstName = in.readString();
             mUser.lastName = in.readString();
             mUser.email = in.readString();
+            mUser.companyName = in.readString();
+            mUser.role = in.readString();
             return mUser;
         }
 
@@ -24,12 +25,8 @@ public class User implements Parcelable {
     private String firstName;
     private String lastName;
     private String email;
-
-    public User(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
+    private String companyName;
+    private String role;
 
     public User() {
 
@@ -45,6 +42,8 @@ public class User implements Parcelable {
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(email);
+        dest.writeString(companyName);
+        dest.writeString(role);
     }
 
     public String getFirstName() {
@@ -71,4 +70,19 @@ public class User implements Parcelable {
         this.email = email;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

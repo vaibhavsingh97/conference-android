@@ -2,6 +2,7 @@
     <string name="app_name">Conference</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_register">Verify Your Details</string>
+
     <!-- Strings related to registering the user -->
     <string name="prompt_email">Email</string>
     <string name="prompt_first_name">First Name</string>
@@ -16,4 +17,8 @@
     <!-- Content Description Strings -->
     <string name="anita_borg">Anita Borg Institute</string>
     <string name="ghc">Grace Hopper Celebration for Women in Computing</string>
+
+    <!-- Strings for FB Sign In -->
+    <string name="facebook_app_id">141216909758045</string>
+    <string name="fb_login_protocol_scheme">fb141216909758045</string>
 </resources>
