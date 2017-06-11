@@ -3,12 +3,12 @@ package com.systers.conference.register;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.systers.conference.MainActivity;
 import com.systers.conference.R;
 import com.systers.conference.login.LoginActivity;
 import com.systers.conference.model.User;
@@ -151,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask();
+            mAuthTask = new UserLoginTask(this);
             mAuthTask.execute((Void) null);
         }
     }
@@ -194,9 +195,10 @@ public class RegisterActivity extends AppCompatActivity {
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+        private Activity activity;
 
-
-        UserLoginTask() {
+        UserLoginTask(Activity activity) {
+            this.activity = activity;
         }
 
         @Override
@@ -220,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                Snackbar.make(mCoordinatorLayout, getString(R.string.success), Snackbar.LENGTH_LONG).show();
+                startActivity(new Intent(activity, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
             } else {
                 LogUtils.LOGE(LOG_TAG, "OnPostExecute()");
             }

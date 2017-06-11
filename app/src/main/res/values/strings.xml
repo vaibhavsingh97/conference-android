@@ -2,6 +2,7 @@
     <string name="app_name">Conference</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_register">Verify Your Details</string>
+    <string name="calendar_not_found">No compatible calendar application found.</string>
 
     <!-- Strings related to registering the user -->
     <string name="prompt_email">Email</string>
@@ -21,4 +22,13 @@
     <!-- Strings for FB Sign In -->
     <string name="facebook_app_id">141216909758045</string>
     <string name="fb_login_protocol_scheme">fb141216909758045</string>
+    <string name="title_activity_main">Schedule</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
