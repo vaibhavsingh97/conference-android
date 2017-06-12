@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.systers.conference.R;
+import com.systers.conference.event.EventDetailActivity;
 import com.systers.conference.schedule.dummy.DummyContent.DummyItem;
 import com.systers.conference.views.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
@@ -55,6 +56,12 @@ public class ConferenceScheduleRecyclerViewAdapter extends RecyclerView.Adapter<
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(v.getContext(), R.string.calendar_not_found, Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(new Intent(v.getContext(), EventDetailActivity.class));
             }
         });
     }

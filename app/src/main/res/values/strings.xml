@@ -30,5 +30,15 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_event_detail">Event Details</string>
+    <string name="event_title">Quiet: How to Harness the Strengths of Introverts to Transform How We Work, Lead And Innovate</string>
+    <string name="location">George R Brown General Assembly</string>
+    <string name="time">October 19, 2016, 14:00 - 15:15</string>
+    <string name="audience">Beginner/Intermediate</string>
+    <string name="description">Description</string>
+    <string name="description_text">In an enlightening, relatable and practical talk, Marc Benioff shows us that introverts think and work in ways that are crucial to the survival of today’s organizations. Drawing on her original research and the latest in neuroscience and psychology, Marc will radically change your view of the best way to develop leaders, manage teams, make smart hires and stimulate innovation.</string>
+    <string name="speakers">Speakers</string>
+    <string name="speaker_name">Marc Benioff</string>
+    <string name="speaker_position">Chairman and CEO, Salesforce</string>
+    <string name="share">Share</string>
 </resources>
