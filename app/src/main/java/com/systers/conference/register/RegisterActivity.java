@@ -24,8 +24,7 @@ import android.widget.TextView;
 
 import com.systers.conference.MainActivity;
 import com.systers.conference.R;
-import com.systers.conference.login.LoginActivity;
-import com.systers.conference.model.User;
+import com.systers.conference.util.AccountUtils;
 import com.systers.conference.util.LogUtils;
 
 import butterknife.BindView;
@@ -86,13 +85,11 @@ public class RegisterActivity extends AppCompatActivity {
                 return false;
             }
         });
-        Intent intent = getIntent();
-        User user = intent.getParcelableExtra(LoginActivity.USER_DATA);
-        mFirstName.setText(user.getFirstName());
-        mLastName.setText(user.getLastName());
-        mEmail.setText(user.getEmail());
-        mCompanyName.setText(user.getCompanyName());
-        mRole.setText(user.getRole());
+        mFirstName.setText(AccountUtils.getFirstName(getApplicationContext()));
+        mLastName.setText(AccountUtils.getLastName(getApplicationContext()));
+        mEmail.setText(AccountUtils.getEmail(getApplicationContext()));
+        mCompanyName.setText(AccountUtils.getCompanyName(getApplicationContext()));
+        mRole.setText(AccountUtils.getCompanyRole(getApplicationContext()));
         if (!TextUtils.isEmpty(mEmail.getText().toString())) {
             mEmail.setEnabled(false);
             mLastName.setNextFocusDownId(R.id.company_name);
@@ -222,6 +219,11 @@ public class RegisterActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
+                AccountUtils.setFirstName(activity, mFirstName.getText().toString());
+                AccountUtils.setLastName(activity, mLastName.getText().toString());
+                AccountUtils.setEmail(activity, mEmail.getText().toString());
+                AccountUtils.setCompanyName(activity, mCompanyName.getText().toString());
+                AccountUtils.setCompanyRole(activity, mRole.getText().toString());
                 startActivity(new Intent(activity, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
             } else {
                 LogUtils.LOGE(LOG_TAG, "OnPostExecute()");

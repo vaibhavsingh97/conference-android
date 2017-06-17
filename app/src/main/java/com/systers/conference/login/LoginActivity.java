@@ -20,13 +20,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
 import com.systers.conference.R;
-import com.systers.conference.model.User;
+import com.systers.conference.model.FacebookUser;
 import com.systers.conference.register.RegisterActivity;
+import com.systers.conference.util.AccountUtils;
 import com.systers.conference.util.LogUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -99,67 +99,63 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
-                            User user = new User();
-                            if (!object.isNull("first_name")) {
-                                String firstName = object.getString("first_name");
-                                user.setFirstName(firstName);
-                            }
-                            if (!object.isNull("last_name")) {
-                                String lastName = object.getString("last_name");
-                                user.setLastName(lastName);
-                            }
-                            if (!object.isNull("email")) {
-                                String email = object.getString("email");
-                                user.setEmail(email);
-                            }
-                            if (!object.isNull("work")) {
-                                JSONArray workArray = object.getJSONArray("work");
-                                JSONObject workObject = workArray.getJSONObject(0);
-                                if (!workObject.isNull("employer")) {
-                                    JSONObject employer = workObject.getJSONObject("employer");
-                                    LogUtils.LOGE(LOG_TAG, employer.toString());
-                                    if (!employer.isNull("name")) {
-                                        String employerName = employer.getString("name");
-                                        user.setCompanyName(employerName);
-                                        LogUtils.LOGE(LOG_TAG, employerName);
-                                    }
-                                }
-                                if (!workObject.isNull("position")) {
-                                    JSONObject position = workObject.getJSONObject("position");
-                                    LogUtils.LOGE(LOG_TAG, position.toString());
-                                    if (!position.isNull("name")) {
-                                        String role = position.getString("name");
-                                        user.setRole(role);
-                                        LogUtils.LOGE(LOG_TAG, role);
-                                    }
-                                }
-                            }
-                            startRegisterActivity(user);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        LogUtils.LOGE(LOG_TAG, object.toString());
+                        FacebookUser facebookUser = new Gson().fromJson(object.toString(), FacebookUser.class);
+                        if (facebookUser.getAccountId() != null) {
+                            AccountUtils.setActiveFacebookAccount(getApplicationContext(), facebookUser.getAccountId());
                         }
+                        if (facebookUser.getFirstName() != null) {
+                            AccountUtils.setFirstName(getApplicationContext(), facebookUser.getFirstName());
+                        }
+                        if (facebookUser.getLastName() != null) {
+                            AccountUtils.setLastName(getApplicationContext(), facebookUser.getLastName());
+                        }
+                        if (facebookUser.getEmail() != null) {
+                            AccountUtils.setEmail(getApplicationContext(), facebookUser.getEmail());
+                        }
+                        if (facebookUser.getCompany() != null) {
+                            AccountUtils.setCompanyName(getApplicationContext(), facebookUser.getCompany());
+                        }
+                        if (facebookUser.getRole() != null) {
+                            AccountUtils.setCompanyRole(getApplicationContext(), facebookUser.getRole());
+                        }
+                        if (facebookUser.getPictureUrl() != null) {
+                            LogUtils.LOGE(LOG_TAG, facebookUser.getPictureUrl());
+                            AccountUtils.setProfilePictureUrl(getApplicationContext(), facebookUser.getPictureUrl());
+                        }
+                        startRegisterActivity();
                     }
                 }
         );
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,first_name,last_name,email,work");
+        parameters.putString("fields", "id,first_name,last_name,email,work,picture.type(large)");
         request.setParameters(parameters);
         request.executeAsync();
     }
 
-    private void startRegisterActivity(User user) {
-        startActivity(new Intent(this, RegisterActivity.class).putExtra("user_data", user));
+    private void startRegisterActivity() {
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
-            User user = new User();
-            user.setFirstName(account.getGivenName());
-            user.setLastName(account.getFamilyName());
-            user.setEmail(account.getEmail());
-            startRegisterActivity(user);
+            if (account.getGivenName() != null) {
+                AccountUtils.setFirstName(getApplicationContext(), account.getGivenName());
+            }
+            if (account.getFamilyName() != null) {
+                AccountUtils.setLastName(getApplicationContext(), account.getFamilyName());
+            }
+            if (account.getEmail() != null) {
+                AccountUtils.setEmail(getApplicationContext(), account.getEmail());
+            }
+            if (account.getId() != null) {
+                AccountUtils.setActiveGoggleAccount(getApplicationContext(), account.getId());
+            }
+            if (account.getPhotoUrl() != null) {
+                AccountUtils.setProfilePictureUrl(getApplicationContext(), account.getPhotoUrl().toString());
+            }
+            startRegisterActivity();
         } else {
             LogUtils.LOGE(LOG_TAG, "Failed Sign In");
         }
