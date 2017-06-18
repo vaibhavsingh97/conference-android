@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import static com.systers.conference.util.LogUtils.LOGD;
+import static com.systers.conference.util.LogUtils.LOGE;
 import static com.systers.conference.util.LogUtils.makeLogTag;
 
 /**
@@ -43,13 +43,13 @@ public class AccountUtils {
     }
 
     public static void setActiveGoggleAccount(final Context context, final String accountId) {
-        LOGD(LOG_TAG, "Set active google account id to: " + accountId);
+        LOGE(LOG_TAG, "Set active google account id to: " + accountId);
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREFIX_PREF_GOOGLE_ID, accountId).apply();
     }
 
     public static void clearActiveGoogleAccount(final Context context) {
-        LOGD(LOG_TAG, "Clearing Google Account");
+        LOGE(LOG_TAG, "Clearing Google Account");
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().remove(PREFIX_PREF_GOOGLE_ID).apply();
     }
@@ -65,19 +65,19 @@ public class AccountUtils {
     }
 
     public static void setActiveFacebookAccount(final Context context, final String accountId) {
-        LOGD(LOG_TAG, "Set active facebook account id to: " + accountId);
+        LOGE(LOG_TAG, "Set active facebook account id to: " + accountId);
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREFIX_PREF_FB_ID, accountId).apply();
     }
 
     public static void clearActiveFacebookAccount(final Context context) {
-        LOGD(LOG_TAG, "Clearing Facebook Account");
+        LOGE(LOG_TAG, "Clearing Facebook Account");
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().remove(PREFIX_PREF_FB_ID).apply();
     }
 
     public static void setFirstName(final Context context, String firstName) {
-        LOGD(LOG_TAG, "Setting first name to: " + firstName);
+        LOGE(LOG_TAG, "Setting first name to: " + firstName);
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREFIX_PREF_FIRST_NAME, firstName).apply();
     }
@@ -90,7 +90,7 @@ public class AccountUtils {
     }
 
     public static void setLastName(final Context context, final String lastName) {
-        LOGD(LOG_TAG, "Setting last name to: " + lastName);
+        LOGE(LOG_TAG, "Setting last name to: " + lastName);
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREFIX_PREF_LAST_NAME, lastName).apply();
     }
@@ -103,7 +103,7 @@ public class AccountUtils {
     }
 
     public static void setEmail(final Context context, final String email) {
-        LOGD(LOG_TAG, "Setting email to: " + email);
+        LOGE(LOG_TAG, "Setting email to: " + email);
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREFIX_PREF_EMAIL, email).apply();
     }
@@ -115,7 +115,7 @@ public class AccountUtils {
     }
 
     public static void setProfilePictureUrl(final Context context, final String url) {
-        LOGD(LOG_TAG, "Setting url to: " + url);
+        LOGE(LOG_TAG, "Setting url to: " + url);
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREFIX_PREF_PHOTO_URL, url).apply();
     }

@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.systers.conference.login.LoginActivity">
 
     <ScrollView
@@ -18,11 +13,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin">
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="@dimen/logo_size"
+                android:layout_height="@dimen/logo_size"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/anita_borg"
                 android:scaleType="fitXY"
@@ -47,8 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="30dp" />
+                android:layout_marginBottom="@dimen/fb_button_margin"
+                android:layout_marginTop="@dimen/fb_button_margin" />
 
         </LinearLayout>
     </ScrollView>

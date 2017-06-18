@@ -32,6 +32,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:fab_addButtonColorNormal="@color/colorAccent"
+        app:fab_addButtonColorPressed="@android:color/white"
         app:fab_addButtonPlusIconColor="@android:color/black"
         app:fab_labelStyle="@style/menu_labels_style"
         app:fab_labelsPosition="left">
@@ -41,16 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@android:color/white"
-            app:fab_icon="@drawable/ic_calendar_plus"
-            app:fab_title="Add to Calendar" />
+            app:fab_title="@string/add_to_calendar" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/share_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@android:color/white"
-            app:fab_icon="@drawable/ic_share_grey600_24dp"
-            app:fab_title="Share" />
+            app:fab_title="@string/share" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

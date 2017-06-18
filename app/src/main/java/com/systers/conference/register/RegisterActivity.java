@@ -85,11 +85,21 @@ public class RegisterActivity extends AppCompatActivity {
                 return false;
             }
         });
-        mFirstName.setText(AccountUtils.getFirstName(getApplicationContext()));
-        mLastName.setText(AccountUtils.getLastName(getApplicationContext()));
-        mEmail.setText(AccountUtils.getEmail(getApplicationContext()));
-        mCompanyName.setText(AccountUtils.getCompanyName(getApplicationContext()));
-        mRole.setText(AccountUtils.getCompanyRole(getApplicationContext()));
+        if (AccountUtils.getFirstName(getApplicationContext()) != null) {
+            mFirstName.setText(AccountUtils.getFirstName(getApplicationContext()));
+        }
+        if (AccountUtils.getLastName(getApplicationContext()) != null) {
+            mLastName.setText(AccountUtils.getLastName(getApplicationContext()));
+        }
+        if (AccountUtils.getEmail(getApplicationContext()) != null) {
+            mEmail.setText(AccountUtils.getEmail(getApplicationContext()));
+        }
+        if (AccountUtils.getCompanyName(getApplicationContext()) != null) {
+            mCompanyName.setText(AccountUtils.getCompanyName(getApplicationContext()));
+        }
+        if (AccountUtils.getCompanyRole(getApplicationContext()) != null) {
+            mRole.setText(AccountUtils.getCompanyRole(getApplicationContext()));
+        }
         if (!TextUtils.isEmpty(mEmail.getText().toString())) {
             mEmail.setEnabled(false);
             mLastName.setNextFocusDownId(R.id.company_name);

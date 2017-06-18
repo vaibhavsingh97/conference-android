@@ -3,6 +3,8 @@
     package="com.systers.conference">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -51,7 +53,20 @@
             android:name=".event.EventDetailActivity"
             android:label="@string/title_activity_event_detail"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.systers.conference.MainActivity" />
+        </activity>
+        <activity
+            android:name=".profile.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.systers.conference.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

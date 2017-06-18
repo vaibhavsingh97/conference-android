@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,20 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:orientation="vertical">
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -28,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_horizontal"
                 tools:text="Aagam Shah" />
 
             <TextView
@@ -37,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_horizontal"
                 android:visibility="gone"
                 tools:text="Developer, Anita Borg Institute" />
 
@@ -46,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/connected"
+                android:text="@string/connected_accounts"
                 android:visibility="gone"
                 tools:text="Connected Accounts" />
 
@@ -66,8 +70,8 @@
                     android:id="@+id/facebook_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="@dimen/list_item_padding"
+                    android:layout_marginStart="@dimen/list_item_padding"
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_facebook_box" />
 
@@ -78,13 +82,15 @@
     </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/edit_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
-        app:elevation="8dp"
+        app:elevation="@dimen/fab_elevation"
+        app:pressedTranslationZ="@dimen/fab_pressed_elevation"
         app:rippleColor="@android:color/white"
         app:srcCompat="@drawable/ic_edit_black_24dp" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

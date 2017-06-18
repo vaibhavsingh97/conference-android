@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
@@ -10,8 +10,10 @@
     android:gravity="center_vertical"
     android:minHeight="?attr/listPreferredItemHeight"
     android:paddingBottom="@dimen/list_item_padding"
+    android:paddingEnd="?attr/listPreferredItemPaddingRight"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
+    android:paddingStart="?attr/listPreferredItemPaddingLeft"
     android:paddingTop="@dimen/list_item_padding">
 
 
@@ -36,6 +38,7 @@
         android:id="@+id/add_to_calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"

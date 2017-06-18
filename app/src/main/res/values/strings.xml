@@ -3,6 +3,9 @@
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_register">Verify Your Details</string>
     <string name="calendar_not_found">No compatible calendar application found.</string>
+    <string name="permissions_snackbar">Run Time Permissions are not granted</string>
+    <string name="permissions_dialog_title">Permissions Required</string>
+    <string name="permissions_dialog_message">This application requires permissions in order to work correctly. Do you want to grant them now?</string>
 
     <!-- Strings related to registering the user -->
     <string name="prompt_email">Email</string>
@@ -41,9 +44,39 @@
     <string name="speaker_name">Marc Benioff</string>
     <string name="speaker_position">Chairman and CEO, Salesforce</string>
     <string name="share">Share</string>
-    <string name="connected">Connected Accounts</string>
+    <string name="connected_accounts">Connected Accounts</string>
 
     <!-- Strings related to fragment titles -->
     <string name="schedule_title">Schedule</string>
     <string name="profile_title">My Profile</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
+
+    <!-- Strings related to widgets like button, toasts, snackbar -->
+    <string name="google_button">Connect with Google</string>
+    <string name="facebook_button">Connect with Facebook</string>
+    <string name="connected">Connected</string>
+    <string name="dialog_title">Disconnect Account</string>
+    <string name="dialog_message">Are you sure you want to disconnect this account?</string>
+    <string name="save">Save Changes</string>
+    <string name="save_toast">Changes Saved Successfully</string>
+    <string name="edit_avatar">Edit Avatar</string>
+    <string name="delete_avatar">Delete Avatar</string>
+    <string name="select_avatar">Select your avatar</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="add_to_calendar">Add to Calendar</string>
+
+    <!-- Strings related to saving image in gallery -->
+    <string name="image_title">Conference</string>
+    <string name="image_description">Profile Picture</string>
+
+    <!-- Strings related to navigation drawer -->
+    <string name="nav_title">Android Studio</string>
+    <string name="email">android.studio@android.com</string>
+    <string name="item_import">Import</string>
+    <string name="item_gallery">Gallery</string>
+    <string name="item_slideshow">Slideshow</string>
+    <string name="item_tools">Tools</string>
+    <string name="item_communicate">Communicate</string>
+    <string name="item_share">Share</string>
+    <string name="item_send">Send</string>
 </resources>
