@@ -41,7 +41,6 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    public static final String USER_DATA = "user_data";
     private static final String LOG_TAG = LogUtils.makeLogTag(LoginActivity.class);
     private static final int GOOGLE_SIGN_IN = 9001;
     @BindView(R.id.google_sign_in_button)
@@ -60,6 +59,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(AccountUtils.getLoginVisited(this)){
+            startActivity(new Intent(this, RegisterActivity.class));
+            finish();
+        }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
@@ -134,7 +137,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void startRegisterActivity() {
-        startActivity(new Intent(this, RegisterActivity.class));
+        AccountUtils.setLoginVisited(this);
+        startActivity(new Intent(this, RegisterActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
     }
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {

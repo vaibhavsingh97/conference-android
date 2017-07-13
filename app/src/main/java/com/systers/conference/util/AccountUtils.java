@@ -27,6 +27,8 @@ public class AccountUtils {
     private static final String PREFIX_PREF_PHOTO_URL = "url_profile_photo_";
     private static final String PREFIX_PREF_GOOGLE_ID = "google_id_";
     private static final String PREFIX_PREF_FB_ID = "facebook_id";
+    private static final String PREFIX_PREF_REGISTER = "register_";
+    private static final String PREFIX_PREF_LOGIN = "login_";
 
     private static SharedPreferences getSharedPreferences(final Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -146,5 +148,25 @@ public class AccountUtils {
     public static String getCompanyRole(final Context context) {
         SharedPreferences preferences = getSharedPreferences(context);
         return preferences.contains(PREFIX_PREF_ROLE) ? preferences.getString(PREFIX_PREF_ROLE, null) : null;
+    }
+
+    public static void setRegisterVisited(final Context context) {
+        SharedPreferences preferences = getSharedPreferences(context);
+        preferences.edit().putBoolean(PREFIX_PREF_REGISTER, true).apply();
+    }
+
+    public static boolean getRegisterVisited(final Context context) {
+        SharedPreferences preferences = getSharedPreferences(context);
+        return preferences.contains(PREFIX_PREF_REGISTER);
+    }
+
+    public static void setLoginVisited(final Context context){
+        SharedPreferences preferences = getSharedPreferences(context);
+        preferences.edit().putBoolean(PREFIX_PREF_LOGIN, true).apply();
+    }
+
+    public static boolean getLoginVisited(final Context context){
+        SharedPreferences preferences = getSharedPreferences(context);
+        return preferences.contains(PREFIX_PREF_LOGIN);
     }
 }
