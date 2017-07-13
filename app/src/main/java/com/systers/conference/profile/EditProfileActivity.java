@@ -18,7 +18,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +44,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -56,6 +56,7 @@ import com.google.android.gms.common.api.Status;
 import com.mvc.imagepicker.ImagePicker;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.systers.conference.MainActivity;
 import com.systers.conference.R;
 import com.systers.conference.util.AccountUtils;
 import com.systers.conference.util.LogUtils;
@@ -76,8 +77,10 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
     private static final int PERMISSION_CALLBACK = 100;
     @BindView(R.id.profile_coordinator_layout)
     CoordinatorLayout mLayout;
-    @BindView(R.id.edit_avatar)
+    @BindView(R.id.avatar)
     CircleImageView mAvatar;
+    @BindView(R.id.edit_icon)
+    FloatingActionButton mEditIcon;
     @BindView(R.id.edit_first_name)
     EditText mFirstName;
     @BindView(R.id.edit_last_name)
@@ -137,7 +140,7 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
         }
     }
 
-    @OnClick(R.id.edit_avatar)
+    @OnClick(R.id.edit_icon)
     public void editAvatar() {
         if (PermissionsUtil.areAllRunTimePermissionsGranted(RUN_TIME_PERMISSIONS, this)) {
             final CharSequence[] items = mIsAvatarPresent ? new CharSequence[]{getString(R.string.edit_avatar), getString(R.string.delete_avatar)}
@@ -239,6 +242,8 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
     }
 
     private void updateAvatar() {
+        Drawable icon = AppCompatResources.getDrawable(this, R.drawable.ic_photo_camera_black_24dp);
+        mEditIcon.setIconDrawable(icon);
         if (AccountUtils.getProfilePictureUrl(this) != null) {
             Picasso.with(this)
                     .load(Uri.parse(AccountUtils.getProfilePictureUrl(this)))
@@ -371,7 +376,6 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            //TODO: Add alert dialog
             onBackPressed();
             return true;
         }
@@ -510,6 +514,9 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
 
     private void saveChanges(boolean isBackPressed) {
         LogUtils.LOGE(LOG_TAG, mFirstName.getText().toString() + ' ' + AccountUtils.getFirstName(this));
+        final Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getString(R.string.edit_profile), true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         boolean dataChanged = !((mFirstName.getText().toString().equals(AccountUtils.getFirstName(this))) &&
                 (mLastName.getText().toString().equals(AccountUtils.getLastName(this))) &&
                 (mCompanyName.getText().toString().equals(AccountUtils.getCompanyName(this))) &&
@@ -531,13 +538,15 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
                     public void onClick(DialogInterface dialog, int which) {
                         hideKeyboard();
                         dialog.dismiss();
-                        NavUtils.navigateUpFromSameTask(EditProfileActivity.this);
+                        startActivity(intent);
+                        finish();
                     }
                 });
                 builder.show();
             } else {
                 hideKeyboard();
-                NavUtils.navigateUpFromSameTask(this);
+                startActivity(intent);
+                finish();
             }
         } else {
             if (dataChanged) {
@@ -548,7 +557,8 @@ public class EditProfileActivity extends AppCompatActivity implements GoogleApiC
                 Toast.makeText(this, getString(R.string.save_toast), Toast.LENGTH_LONG).show();
             }
             hideKeyboard();
-            NavUtils.navigateUpFromSameTask(this);
+            startActivity(intent);
+            finish();
         }
     }
 }

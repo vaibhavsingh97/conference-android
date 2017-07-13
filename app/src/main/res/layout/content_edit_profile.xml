@@ -17,11 +17,29 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_vertical_margin">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/edit_avatar"
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
-            android:layout_gravity="center_horizontal" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/edit_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@android:color/white"
+                app:fab_size="mini" />
+
+        </FrameLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/text_input_firstname"

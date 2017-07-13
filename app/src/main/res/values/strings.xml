@@ -79,4 +79,7 @@
     <string name="item_communicate">Communicate</string>
     <string name="item_share">Share</string>
     <string name="item_send">Send</string>
+
+    <!--Strings related to intents -->
+    <string name="edit_profile" translatable="false">edit_profile</string>
 </resources>
