@@ -14,8 +14,15 @@
     <string name="prompt_company_name">Company Name (optional)</string>
     <string name="prompt_role">Role (optional)</string>
     <string name="action_register">Register</string>
-    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_email">Please enter valid E-mail Address</string>
     <string name="success">Success</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error">Error</string>
+    <string name="progressdialog_message">Please wait...</string>
+    <string name="ask_for_registration">Do you wish to register?</string>
+    <string name="registration_successfull">Successfully Registered</string>
+    <string name="registration_unsuccessful">Registration Unsuccessful. Please try again!</string>
 
     <!-- Strings for accessibility -->
     <!-- Content Description Strings -->
@@ -82,4 +89,9 @@
 
     <!--Strings related to intents -->
     <string name="edit_profile" translatable="false">edit_profile</string>
+    <string name="registration" translatable="false">form_data</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_pre_registration">PreRegistration</string>
 </resources>

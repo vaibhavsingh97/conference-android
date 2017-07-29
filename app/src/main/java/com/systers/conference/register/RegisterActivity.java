@@ -1,255 +1,134 @@
 package com.systers.conference.register;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.text.InputType;
 import android.util.Patterns;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.view.Gravity;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.heinrichreimersoftware.singleinputform.SingleInputFormActivity;
+import com.heinrichreimersoftware.singleinputform.steps.CheckBoxStep;
+import com.heinrichreimersoftware.singleinputform.steps.OptionStep;
+import com.heinrichreimersoftware.singleinputform.steps.Step;
+import com.heinrichreimersoftware.singleinputform.steps.TextStep;
 import com.systers.conference.MainActivity;
 import com.systers.conference.R;
+import com.systers.conference.api.DataDownloadManager;
+import com.systers.conference.callback.ObjectResponseCallback;
+import com.systers.conference.model.AttendeeId;
+import com.systers.conference.model.Question;
 import com.systers.conference.util.AccountUtils;
 import com.systers.conference.util.LogUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * A screen that allows user to verify details and register for the event.
  */
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends SingleInputFormActivity implements ObjectResponseCallback<AttendeeId> {
 
     private static final String LOG_TAG = LogUtils.makeLogTag(RegisterActivity.class);
-    @BindView(R.id.register_coordinator_layout)
-    CoordinatorLayout mCoordinatorLayout;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
-    @BindView(R.id.register_form)
-    ScrollView mRegisterForm;
-    @BindView(R.id.first_name)
-    EditText mFirstName;
-    @BindView(R.id.last_name)
-    EditText mLastName;
-    @BindView(R.id.email)
-    EditText mEmail;
-    @BindView(R.id.company_name)
-    EditText mCompanyName;
-    @BindView(R.id.role)
-    EditText mRole;
-    @BindView(R.id.register_button)
-    Button mRegister;
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    List<Question> questions;
 
-    @OnClick(R.id.register_button)
-    public void register() {
-        attemptLogin();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        if (AccountUtils.getRegisterVisited(this)) {
+            startActivity(new Intent(this, MainActivity.class));
+            ActivityCompat.finishAffinity(this);
+        }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(AccountUtils.getRegisterVisited(this)){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-        setContentView(R.layout.activity_register);
-        ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_register));
-        mRole.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE) {
-                    attemptLogin();
-                    return true;
+    protected List<Step> onCreateSteps() {
+        Intent intent = getIntent();
+        questions = new Gson().fromJson(intent.getStringExtra(getString(R.string.registration)), new TypeToken<List<Question>>() {
+        }.getType());
+        List<Step> steps = new ArrayList<>();
+        setInputGravity(Gravity.CENTER);
+        if (questions != null) {
+            for (Question question : questions) {
+                switch (question.getInputType()) {
+                    case 1:
+                        if (question.getFieldName().contains("email")) {
+                            steps.add(new TextStep.Builder(this, question.getFieldName())
+                                    .title(question.getDisplayName()).error(getString(R.string.error_invalid_email)).details(question.getDisplayName())
+                                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                                    .validator(new TextStep.Validator() {
+                                        @Override
+                                        public boolean validate(String input) {
+                                            return Patterns.EMAIL_ADDRESS.matcher(input).matches();
+                                        }
+                                    }).build());
+                        } else {
+                            steps.add(new TextStep.Builder(this, question.getFieldName())
+                                    .title(question.getDisplayName()).error("Error").details(question.getDisplayName()).inputType(InputType.TYPE_CLASS_TEXT).build());
+                        }
+                        break;
+                    case 17:
+                    case 16:
+                        //TODO: Replace this hardcoded options with real options.
+                        String[] options = {"Option1", "Option2", "Option3"};
+                        steps.add(new OptionStep.Builder(this, question.getFieldName()).title(question.getDisplayName()).error("Error")
+                                .details(question.getDisplayName()).options(options).build());
+                        break;
+                    case 3:
+                        steps.add(new CheckBoxStep.Builder(this, question.getFieldName()).
+                                title(question.getDisplayName())
+                                .error(getString(R.string.error))
+                                .details(question.getDisplayName())
+                                .text(getString(R.string.yes))
+                                .build());
+                        break;
+                    default:
+                        LogUtils.LOGE(LOG_TAG, "No data found");
+                        break;
                 }
-                return false;
             }
-        });
-        if (AccountUtils.getFirstName(getApplicationContext()) != null) {
-            mFirstName.setText(AccountUtils.getFirstName(getApplicationContext()));
         }
-        if (AccountUtils.getLastName(getApplicationContext()) != null) {
-            mLastName.setText(AccountUtils.getLastName(getApplicationContext()));
+        return steps;
+    }
+
+    @Override
+    protected void onFormFinished(Bundle bundle) {
+        Map<String, String> responses = new HashMap<>();
+        for (Question question : questions) {
+            switch (question.getInputType()) {
+                case 1:
+                    responses.put(question.getFieldName(), TextStep.text(bundle, question.getFieldName()));
+                    break;
+                default:
+                    LogUtils.LOGE(LOG_TAG, "It is checkbox or radio");
+                    break;
+            }
         }
-        if (AccountUtils.getEmail(getApplicationContext()) != null) {
-            mEmail.setText(AccountUtils.getEmail(getApplicationContext()));
-        }
-        if (AccountUtils.getCompanyName(getApplicationContext()) != null) {
-            mCompanyName.setText(AccountUtils.getCompanyName(getApplicationContext()));
-        }
-        if (AccountUtils.getCompanyRole(getApplicationContext()) != null) {
-            mRole.setText(AccountUtils.getCompanyRole(getApplicationContext()));
-        }
-        if (!TextUtils.isEmpty(mEmail.getText().toString())) {
-            mEmail.setEnabled(false);
-            mLastName.setNextFocusDownId(R.id.company_name);
-        }
+        DataDownloadManager.getInstance().createAttendee(this, responses);
+    }
+
+    @Override
+    public void OnSuccess(AttendeeId response) {
+        AccountUtils.setRegisterVisited(this);
+        Toast.makeText(this, getString(R.string.registration_successfull), Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, MainActivity.class));
+        ActivityCompat.finishAffinity(this);
     }
 
 
-    /**
-     * Attempts to register the account specified by the form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
-        // Reset errors.
-        mFirstName.setError(null);
-        mLastName.setError(null);
-        mCompanyName.setError(null);
-        mRole.setError(null);
-        mEmail.setError(null);
-
-        // Store values at the time of the register attempt.
-        String firstName = mFirstName.getText().toString();
-        String lastName = mLastName.getText().toString();
-        String email = mEmail.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        //Check for empty names.
-        if (TextUtils.isEmpty(firstName)) {
-            mFirstName.setError(getString(R.string.error_field_required));
-            focusView = mFirstName;
-            cancel = true;
-        } else if (TextUtils.isEmpty(lastName)) {
-            mLastName.setError(getString(R.string.error_field_required));
-            focusView = mLastName;
-            cancel = true;
-        } else if (TextUtils.isEmpty(email)) {
-            mEmail.setError(getString(R.string.error_field_required));
-            focusView = mEmail;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmail.setError(getString(R.string.error_invalid_email));
-            focusView = mEmail;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(this);
-            mAuthTask.execute((Void) null);
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-        mRegisterForm.setVisibility(show ? View.GONE : View.VISIBLE);
-        mRegisterForm.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mRegisterForm.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressBar.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
-
-    /**
-     * Represents an asynchronous registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-        private Activity activity;
-
-        UserLoginTask(Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                AccountUtils.setFirstName(activity, mFirstName.getText().toString());
-                AccountUtils.setLastName(activity, mLastName.getText().toString());
-                AccountUtils.setEmail(activity, mEmail.getText().toString());
-                AccountUtils.setCompanyName(activity, mCompanyName.getText().toString());
-                AccountUtils.setCompanyRole(activity, mRole.getText().toString());
-                AccountUtils.setRegisterVisited(activity);
-                startActivity(new Intent(activity, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-            } else {
-                LogUtils.LOGE(LOG_TAG, "OnPostExecute()");
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+    @Override
+    public void OnFailure(Throwable error) {
+        Toast.makeText(this, getString(R.string.registration_unsuccessful), Toast.LENGTH_LONG).show();
+        ActivityCompat.finishAffinity(this);
+        startActivity(getIntent());
     }
 }
 
