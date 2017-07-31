@@ -1,4 +1,5 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fb="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_coordinator_layout"
     android:layout_width="match_parent"
@@ -31,20 +32,24 @@
                 android:contentDescription="@string/ghc"
                 android:src="@drawable/ghc" />
 
-            <com.google.android.gms.common.SignInButton
+            <Button
                 android:id="@+id/google_sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
+                style="@style/GoogleLoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/signin_button_height"
+                android:background="@drawable/btn_google_signin_light_normal_xxxhdpi"
+                android:text="@string/sign_in_with_google"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/fb_login_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/FacebookLoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/signin_button_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/fb_button_margin"
-                android:layout_marginTop="@dimen/fb_button_margin" />
+                fb:com_facebook_login_text="@string/sign_in_with_facebook"
+                fb:com_facebook_logout_text="@string/logout" />
 
         </LinearLayout>
     </ScrollView>

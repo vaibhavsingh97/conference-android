@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final String LOG_TAG = LogUtils.makeLogTag(LoginActivity.class);
     private static final int GOOGLE_SIGN_IN = 9001;
     @BindView(R.id.google_sign_in_button)
-    SignInButton mSignInButton;
+    Button mSignInButton;
     @BindView(R.id.fb_login_button)
     LoginButton mLoginButton;
     private GoogleApiClient mGoogleApiClient;
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(AccountUtils.getLoginVisited(this)){
+        if (AccountUtils.getLoginVisited(this)) {
             startActivity(new Intent(this, PreRegistrationActivity.class));
             ActivityCompat.finishAffinity(this);
         }
@@ -70,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
-        mSignInButton.setSize(SignInButton.SIZE_WIDE);
         mCallbackManager = CallbackManager.Factory.create();
         mLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_work_history"));
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
